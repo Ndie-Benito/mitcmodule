@@ -1,9 +1,14 @@
-module "example" {
-  source              = "./modules/examplemodule/"
-  resource_group_name = local.resource_group_name
-  location            = local.location
-  vnet_name           = local.vnet_name
-  address_space       = local.address_space
-  subnet_name         = local.subnet_name
-  address_prefixes    = local.address_prefixes
+resource "azurerm_virtual_network" "vnet" {
+  name                = var.vnet_name
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  address_space       = var.vnet_address_space
+}
+
+resource "azurerm_subnet" "subnet" {
+  for_each             = var.subnets
+  name                 = each.value.name
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = [each.value.address_prefix]
 }
