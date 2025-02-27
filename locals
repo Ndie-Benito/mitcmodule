@@ -1,26 +1,12 @@
-variable "resource_group_name" {
-  description = "The name of the resource group in which to create the Virtual Network."
-  type        = string
-}
+locals {
+  resource_group_name = "my-resource-group"
+  location           = "Central US"
 
-variable "location" {
-  description = "The Azure region where the Virtual Network will be created."
-  type        = string
-}
+  vnet_name          = "my-vnet"
+  vnet_address_space = ["10.0.0.0/16"]
 
-variable "vnet_name" {
-  description = "The name of the Virtual Network."
-  type        = string
-}
-
-variable "vnet_address_space" {
-  description = "The address space for the Virtual Network."
-  type        = list(string)
-}
-
-variable "subnets" {
-  description = "A map of subnets to create within the Virtual Network."
-  type = map(object({
-    address_prefixes = list(string)
-  }))
+  subnets = {
+    subnet1 = { name = "subnet-a", address_prefix = "10.0.1.0/24" }
+    subnet2 = { name = "subnet-b", address_prefix = "10.0.2.0/24" }
+  }
 }
